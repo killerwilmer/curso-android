@@ -7,15 +7,17 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 package com.parse.starter;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
-import com.parse.GetCallback;
+import com.parse.FindCallback;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
+    // Save object
     /* ParseObject score = new ParseObject("Score");
     score.put("username", "wilmer");
     score.put("score", 86);
@@ -40,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
       }
     }); */
 
-    ParseQuery<ParseObject> query = ParseQuery.getQuery("Score");
+
+    // Update value
+    /* ParseQuery<ParseObject> query = ParseQuery.getQuery("Score");
 
     query.getInBackground("WPg92Btpxw", new GetCallback<ParseObject>() {
       @Override
@@ -54,8 +59,47 @@ public class MainActivity extends AppCompatActivity {
           Log.i("ObjectValue", Integer.toString(object.getInt("score")));
         }
       }
-    });
+    }); */
 
+
+    // Query find
+    /*ParseQuery<ParseObject> query = ParseQuery.getQuery("Score");
+
+    query.whereEqualTo("username", "killer");
+    query.setLimit(1);
+
+    query.findInBackground(new FindCallback<ParseObject>() {
+      @Override
+      public void done(List<ParseObject> objects, ParseException e) {
+        if ( e == null) {
+          Log.i("findInBackground", "Retrive " + objects.size() + " objects");
+
+          if (objects.size() > 0) {
+            for (ParseObject object : objects) {
+              Log.i("findInBackground", Integer.toString(object.getInt("score")));
+            }
+          }
+        }
+      }
+    });*/
+
+
+    // Update objects from find
+    ParseQuery<ParseObject> query = ParseQuery.getQuery("Score");
+
+    query.whereGreaterThan("score", 200);
+
+    query.findInBackground(new FindCallback<ParseObject>() {
+      @Override
+      public void done(List<ParseObject> objects, ParseException e) {
+        if (e == null && objects != null) {
+          for (ParseObject object : objects) {
+            object.put("score", object.getInt("score") + 50);
+            object.saveInBackground();
+          }
+        }
+      }
+    });
 
     ParseAnalytics.trackAppOpenedInBackground(getIntent());
   }
