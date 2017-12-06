@@ -10,14 +10,10 @@ package com.parse.starter;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
-import com.parse.FindCallback;
 import com.parse.ParseAnalytics;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-
-import java.util.List;
+import com.parse.ParseUser;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,78 +24,45 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    // Save object
-    /* ParseObject score = new ParseObject("Score");
-    score.put("username", "wilmer");
-    score.put("score", 86);
-    score.saveInBackground(new SaveCallback() {
+
+    // Log Out
+    ParseUser.logOut();
+
+    // Ask for user logged
+    if (ParseUser.getCurrentUser() != null) {
+      Log.i("currentUser", "User: " + ParseUser.getCurrentUser().getUsername());
+    } else {
+      Log.i("currentUser", "User not logged in");
+    }
+
+    // Login User
+    /*ParseUser.logInInBackground("killerwilmer", "abcdef", new LogInCallback() {
       @Override
-      public void done(ParseException e) {
-        if (e == null) {
-          Log.i("SaveInBackground", "Successful");
+      public void done(ParseUser user, ParseException e) {
+        if (user != null) {
+          Log.i("Login", "Successful");
         } else {
-          Log.i("SaveInBackground", "Failed. Error: " + e.toString());
-        }
-      }
-    }); */
-
-
-    // Update value
-    /* ParseQuery<ParseObject> query = ParseQuery.getQuery("Score");
-
-    query.getInBackground("WPg92Btpxw", new GetCallback<ParseObject>() {
-      @Override
-      public void done(ParseObject object, ParseException e) {
-        if (e == null && object != null) {
-
-          object.put("score", 200); // Update value
-          object.saveInBackground();
-
-          Log.i("ObjectValue", object.getString("username"));
-          Log.i("ObjectValue", Integer.toString(object.getInt("score")));
-        }
-      }
-    }); */
-
-
-    // Query find
-    /*ParseQuery<ParseObject> query = ParseQuery.getQuery("Score");
-
-    query.whereEqualTo("username", "killer");
-    query.setLimit(1);
-
-    query.findInBackground(new FindCallback<ParseObject>() {
-      @Override
-      public void done(List<ParseObject> objects, ParseException e) {
-        if ( e == null) {
-          Log.i("findInBackground", "Retrive " + objects.size() + " objects");
-
-          if (objects.size() > 0) {
-            for (ParseObject object : objects) {
-              Log.i("findInBackground", Integer.toString(object.getInt("score")));
-            }
-          }
+          Log.i("Login", "Failed " + e.toString());
         }
       }
     });*/
 
+    // For create a User
+    /* ParseUser parseUser = new ParseUser();
 
-    // Update objects from find
-    ParseQuery<ParseObject> query = ParseQuery.getQuery("Score");
+    parseUser.setUsername("killerwilmer");
+    parseUser.setPassword("mypass");
 
-    query.whereGreaterThan("score", 200);
-
-    query.findInBackground(new FindCallback<ParseObject>() {
+    parseUser.signUpInBackground(new SignUpCallback() {
       @Override
-      public void done(List<ParseObject> objects, ParseException e) {
-        if (e == null && objects != null) {
-          for (ParseObject object : objects) {
-            object.put("score", object.getInt("score") + 50);
-            object.saveInBackground();
-          }
+      public void done(ParseException e) {
+        if (e != null) {
+          Log.i("Sign Up", "Successful");
+        } else {
+          Log.i("Sign Up", "Failed");
         }
       }
-    });
+    });*/
 
     ParseAnalytics.trackAppOpenedInBackground(getIntent());
   }
