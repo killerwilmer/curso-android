@@ -17,11 +17,20 @@
         app:boxedEdges="all">
 
         <TextView
+            android:id="@+id/helloTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/hello_world"
             android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/clickButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:onClick="click"
+            android:text="Click" />
 
         <ImageButton
             android:background="@null"
