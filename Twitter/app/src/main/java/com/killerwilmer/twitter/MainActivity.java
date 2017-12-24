@@ -1,5 +1,6 @@
 package com.killerwilmer.twitter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,6 +18,13 @@ public class MainActivity extends AppCompatActivity {
     EditText usernameEditText;
     EditText passwordEditText;
 
+    public void redirectUser() {
+        if (ParseUser.getCurrentUser() != null) {
+            Intent intent = new Intent(getApplicationContext(), ListActivity.class);
+            startActivity(intent);
+        }
+    }
+
     public void signupLogin(View view) {
 
         ParseUser.logInInBackground(usernameEditText.getText().toString(), passwordEditText.getText().toString(), new LogInCallback() {
@@ -24,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
             public void done(ParseUser user, ParseException e) {
                 if (e == null) {
                     Log.i("Info", "Logged In");
+                    redirectUser();
                 } else {
                     ParseUser parseUser = new ParseUser();
 
@@ -35,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
                         public void done(ParseException e) {
                             if (e == null) {
                                 Log.i("Info", "Signed Up");
+                                redirectUser();
                             } else {
                                 Toast.makeText(MainActivity.this, "Error " + e.getMessage().substring(e.getMessage().indexOf(" ")), Toast.LENGTH_SHORT).show();
                             }
@@ -53,6 +63,6 @@ public class MainActivity extends AppCompatActivity {
         usernameEditText = (EditText) findViewById(R.id.usernameEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
 
-
+        redirectUser();
     }
 }
