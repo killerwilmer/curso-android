@@ -92,6 +92,9 @@ public class ListActivity extends AppCompatActivity {
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
+        } else if (item.getItemId() == R.id.feed) {
+            Intent intent = new Intent(getApplicationContext(), FeedActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
